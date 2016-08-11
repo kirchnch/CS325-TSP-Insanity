@@ -36,11 +36,27 @@ struct tour {
     int tour_length;
 };
 
+//single edge
+struct edge {
+    int startVertexIndex;
+    int endVertexIndex;
+    int length;
+};
+
+//list of edges
+struct edgeList {
+    edge *edges;
+    int count;
+};
+
 void fileToTour(string, tour*);
 void printTour(tour*);
 void tourToFile(tour*, string);
 void copyTour(tour*, tour*);
 void initTour(tour*, int);
+int getTourLength(tour*);
+void initEdgeList(edgeList*, int);
 void swapVertex(tour*, int, int);
+void swapEdge(edgeList*, int, int);
 
 #endif /* inputOutputConversion_hpp */

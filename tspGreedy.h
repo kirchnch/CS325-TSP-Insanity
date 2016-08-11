@@ -13,6 +13,6 @@
 #include "inputOutputConversion.h"
 
 void nearestNeighbor(tour*, int);
-struct tour loopNN(tour*,int);
+tour loopNN(tour*,int);
 
 #endif /* tspGreedy_hpp */

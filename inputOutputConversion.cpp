@@ -72,7 +72,6 @@ void copyTour(tour *dest, tour *source){
     for (int i=0; i<source->count; i++){
         dest->vertices[i] = source->vertices[i];
     }
-    
 }
 
 void initTour(tour *t, int num_vertices){
@@ -81,8 +80,28 @@ void initTour(tour *t, int num_vertices){
     t->vertices = (vertex*) malloc(sizeof(vertex)*num_vertices);
 }
 
+int getTourLength(tour *t) {
+    int tourLength = 0;
+    for (int i=0; i < t->count-1; i++) {
+        int edgeLength = sqrt(pow((t->vertices[i].x - t->vertices[i+1].x),2) + pow((t->vertices[i].y - t->vertices[i+1].y),2));
+        tourLength += edgeLength;
+    }
+    return tourLength;
+}
+
+void initEdgeList(edgeList* edgeList, int numOfEdges) {
+    edgeList->count = 0;
+    edgeList->edges = (edge*) malloc (sizeof(edge)*numOfEdges);
+}
+
 void swapVertex(tour *t, int x, int y){
     vertex tmp = t->vertices[x];
     t->vertices[x] = t->vertices[y];
     t->vertices[y] = tmp;
+}
+
+void swapEdge(edgeList* lst, int index1, int index2) {
+    edge tmp = lst->edges[index1];
+    lst->edges[index1] = lst->edges[index2];
+    lst->edges[index2] = tmp;
 }
