@@ -9,6 +9,7 @@
 #include <cstring>
 #include <time.h>
 #include <unistd.h>
+#include <signal.h>
 #include "inputOutputConversion.h"
 #include "tspGreedy.h"
 #include "tspOpt2.h"
@@ -65,15 +66,18 @@ int main(int argc, const char * argv[]) {
         }
 
         //improve tsp by opt_2
-        opt2(&tmp);
+		if (num_vertices < 1001){
+				opt2(&tmp);
 
-        cout << "OPT: " << tmp.tour_length << endl;
+				cout << "OPT: " << tmp.tour_length << endl;
 
-        if (best_distance > tmp.tour_length){
-            best_distance = tmp.tour_length;
-            copyTour(&best_tsp, &tmp);
-            tourToFile(&best_tsp, output_filename);
-        }
+				if (best_distance > tmp.tour_length){
+					best_distance = tmp.tour_length;
+					copyTour(&best_tsp, &tmp);
+					tourToFile(&best_tsp, output_filename);
+				}
+
+		}
     }
     tourToFile(&best_tsp, output_filename);
 }
