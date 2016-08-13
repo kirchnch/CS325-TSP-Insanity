@@ -82,10 +82,16 @@ void initTour(tour *t, int num_vertices){
 
 int getTourLength(tour *t) {
     int tourLength = 0;
+    int edgeLength;
     for (int i=0; i < t->count-1; i++) {
-        int edgeLength = sqrt(pow((t->vertices[i].x - t->vertices[i+1].x),2) + pow((t->vertices[i].y - t->vertices[i+1].y),2));
+        edgeLength = (int) round(sqrt(pow((t->vertices[i].x - t->vertices[i+1].x),2)
+                                + pow((t->vertices[i].y - t->vertices[i+1].y),2)));
         tourLength += edgeLength;
     }
+    //need to calculate distance between last vertex and starting vertex
+    tourLength += (int) round(sqrt(pow((t->vertices[0].x - t->vertices[t->count-1].x),2) \
+                      + pow((t->vertices[0].y - t->vertices[t->count-1].y),2)));
+
     return tourLength;
 }
 

@@ -8,7 +8,7 @@
 
 #include "tspGreedy.h"
 
-void nearestNeighbor(tour *t, int starting_vertex){
+void nearestNeighborTSP(tour *t, int starting_vertex){
     
     swapVertex(t, 0, starting_vertex);
     for (int i=0; i< t->count-1; i++) {
@@ -26,8 +26,10 @@ void nearestNeighbor(tour *t, int starting_vertex){
             }
         }
         swapVertex(t, i + 1, nearest);
-        t->tour_length += sqrt(nearest_distance);
+        t->tour_length += (int) round(sqrt(nearest_distance));
     }
+    t->tour_length += (int) round(sqrt(pow(( t->vertices[0].x - t->vertices[t->count-1].x),2) \
+            + pow(( t->vertices[0].y -  t->vertices[t->count-1].y),2)));
     
 }
 
@@ -41,7 +43,7 @@ struct tour loopNN(tour *t, int num_loops){
     int min_tour_length = numeric_limits<int>::max();
     for (int i=0; i<num_loops; i++){
         copyTour(&tmp_tour, t);
-        nearestNeighbor(&tmp_tour, i);
+        nearestNeighborTSP(&tmp_tour, i);
         if (min_tour_length > tmp_tour.tour_length){
             min_tour_length = tmp_tour.tour_length;
             copyTour(&min_tour, &tmp_tour);
@@ -49,4 +51,38 @@ struct tour loopNN(tour *t, int num_loops){
     }
     
     return min_tour;
+}
+
+//get nearest neighbor to target
+struct node *searchNN(struct node *cur, struct node *target,
+              struct node **best, double *best_distance, int axis){
+    if (cur == NULL){
+        return 0;
+    }
+
+    //find distance between current node and target
+    double distance = getDistance(cur, target);
+
+    //set new best distance if found or does not exist
+    if (distance < *best_distance){
+        *best_distance = distance;
+        *best = cur;
+    }
+
+    //get distance between current node and target
+    //switch dimension between x and y as you recurse
+    axis = (axis+1) % 2;
+
+    if (target->point[axis] < cur->point[axis]){
+        cur = searchNN(cur->left, target, best, best_distance, axis);
+    }
+    else {
+        cur = searchNN(cur->right, target, best, best_distance, axis);
+    }
+}
+
+//get distance between two nodes
+double getDistance(struct node *cur, struct node *target){
+    return pow((cur->point[0]-target->point[0]), 2) +
+           pow((cur->point[1]-target->point[1]), 2);
 }

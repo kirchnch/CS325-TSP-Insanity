@@ -12,7 +12,15 @@
 #include <stdio.h>
 #include "inputOutputConversion.h"
 
-void nearestNeighbor(tour*, int);
+struct node {
+    int point[2];
+    struct node *left, *right;
+};
+
+void nearestNeighborTSP(tour*, int);
 tour loopNN(tour*,int);
+struct node *searchNN(struct node *, struct node *,
+                      struct node **, double *, int );
+double getDistance(struct node *a, struct node *b);
 
 #endif /* tspGreedy_hpp */

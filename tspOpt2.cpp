@@ -36,7 +36,7 @@ void opt2(struct tour *initialTour) {
                 copyTour(initialTour, &tmp);
                 best_dist = new_dist;
                 unimprove = 0; //reset unimproved count
-                cout << best_dist << endl;
+                //cout << best_dist << endl;
             }
             else {
                 unimprove++;
