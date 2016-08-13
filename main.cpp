@@ -27,6 +27,8 @@ void sigalrm_handler(int sig){
 }
 
 int main(int argc, const char * argv[]) {
+	clock_t begin = clock();
+	
     //first argument is intput filename
     string input_filename = argv[1];
     //assign output filename
@@ -79,6 +81,7 @@ int main(int argc, const char * argv[]) {
 
 		}
     }
+	cout << "TIME: " << (float) (clock()-begin)/CLOCKS_PER_SEC << endl;
     tourToFile(&best_tsp, output_filename);
 }
 
