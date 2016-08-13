@@ -45,33 +45,35 @@ int main(int argc, const char * argv[]) {
     alarm(179);
 
     //do multiple iterations of greedy TSP algorithm with different starting vertices
-    int starting_vertex = 0;
     double best_distance = std::numeric_limits<double>::infinity();
-    int i = 0;
+    int start_vertex = 0;
     int num_vertices = tsp.count;
 
     struct tour tmp;
     initTour(&tmp, tsp.count);
-    while (i < num_vertices){
+    while (start_vertex < num_vertices){
         copyTour(&tmp, &tsp);
-        nearestNeighborTSP(&tmp, i);
-        i++;
+        nearestNeighborTSP(&tmp, start_vertex);
+        start_vertex++;
         cout << "NN: " << tmp.tour_length << endl; //debug
 
-        //improve tsp by opt_2
-        opt2(&tmp);
-        clock_t end2;
-
-        //should implement getTourLength in your algorithm loop (efficient)
-        //cout << getTourLength(&tsp)<< endl; //debug
-        cout << "OPT: " << tmp.tour_length << endl;
-        //cout << (double)(end2 - begin)/CLOCKS_PER_SEC << endl;
 
         if (best_distance > tmp.tour_length){
             best_distance = tmp.tour_length;
             copyTour(&best_tsp, &tmp);
+            tourToFile(&best_tsp, output_filename);
         }
-        starting_vertex += 1;
+
+        //improve tsp by opt_2
+        opt2(&tmp);
+
+        cout << "OPT: " << tmp.tour_length << endl;
+
+        if (best_distance > tmp.tour_length){
+            best_distance = tmp.tour_length;
+            copyTour(&best_tsp, &tmp);
+            tourToFile(&best_tsp, output_filename);
+        }
     }
     tourToFile(&best_tsp, output_filename);
 }
